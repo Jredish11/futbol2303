@@ -32,21 +32,45 @@
 
   -https://docs.google.com/document/d/1E83-CrSe4Pgk7h_P4YHnFegHKaku1JHFG2Du9mzagmk/edit
 
+## Retro Deliverables
+In addition to giving a summary of your retro during the evaluation, AFTER you do your retro, add to your README:
+
+The name of and links (if applicable) to any tools you used for retro:
+  - Miro board: https://miro.com/app/board/uXjVPmJTx8o=/
+  - Google doc with notes from retro meeting:https://docs.google.com/document/d/1JA7Gi-gHuJy4KALCxvnYU3Q9R8PZX4cpWZ9QOOANTZk/edit
+  - Agenda for the meeting in which we planned out when the retro would happen:
+https://docs.google.com/document/d/1MDDcwT3OdgKjt4d1E6K2iBNiJmy8HFsCwM13jy5sf1g/edit#
+
+### Top 3 things that went well during your project
+1. Communication
+2. Collaboration
+3. Good git workflow
+
+### Top 3 things your team would do differently next time
+  - Find a way to avoid writing repetitive code (i.e. helper methods)
+    - How could we have DRYed things up as we went while divvying up methods?
+    - Could have written one method designed to be used slightly different ways in similar methods
+
+  - Time management
+
+  - Scheduling out async time better
+    - Being more strategic about the order in methods were assigned in order to avoid repeating efforts
+
 
 ### Contributors
 
   - Jeff Redish
-    LinkedIn - https://www.linkedin.com/in/jeffrey-r-5b5026107/
-    GitHub - https://github.com/Jredish11
+    - LinkedIn - https://www.linkedin.com/in/jeffrey-r-5b5026107/
+    - GitHub - https://github.com/Jredish11
 
   - Andy Stilmock
-    LinkedIn - https://www.linkedin.com/in/andrew-stilmock-9ba598270/
-    GitHub - https://github.com/AStilmock
+    - LinkedIn - https://www.linkedin.com/in/andrew-stilmock-9ba598270/
+    - GitHub - https://github.com/AStilmock
 
   - Will Zale
-    LinkedIn - https://www.linkedin.com/in/william-zale-764b0921/
-    GitHub - https://github.com/WZale
+    - LinkedIn - https://www.linkedin.com/in/william-zale-764b0921/
+    - GitHub - https://github.com/WZale
 
   - Jesse Thomas
-    LinkedIn - https://www.linkedin.com/in/jesse-thomas-2626a717/ 
-    GitHub - https://github.com/Jgthomas-12
+    - LinkedIn - https://www.linkedin.com/in/jesse-thomas-2626a717/ 
+    - GitHub - https://github.com/Jgthomas-12
