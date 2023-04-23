@@ -156,8 +156,17 @@ RSpec.describe StatTracker do
     end
   end
 
-  it "#winningest_coach" do
-    expect(@stat_tracker.winningest_coach("20132014")).to eq "Claude Julien"
-    expect(@stat_tracker.winningest_coach("20142015")).to eq "Alain Vigneault"
+  describe "#winningest_coach" do
+    it "returns the coach with the highest win percentage" do
+      expect(@stat_tracker.winningest_coach("20132014")).to eq "Claude Julien"
+      expect(@stat_tracker.winningest_coach("20142015")).to eq "Alain Vigneault"
+    end
   end
+
+  describe "#percentage_ties" do
+    it "can calculate percentage of tie games team has had" do
+      expect(@stat_tracker.percentage_ties).to eq 0.20
+    end
+  end
+
 end

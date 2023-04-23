@@ -151,7 +151,7 @@ class StatTracker
   def winningest_coach(year)
     season_sort = @games.group_by { |game| game.season } 
     game_id_sort = @game_teams.group_by { |id| id.game_id }
- 
+
     game_ids_season = Hash.new(0)
     @games.each { |game| game_ids_season[game.id] = game.season } 
 
@@ -235,6 +235,9 @@ class StatTracker
     high_avg[0]
   end
 
-  
-
+  def percentage_ties
+    result = @game_teams.find_all { |gameteam| gameteam.result == "TIE" }.count
+    (result.to_f / @game_teams.count).round(2)
+  end
 end
+
