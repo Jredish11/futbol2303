@@ -239,5 +239,27 @@ class StatTracker
     result = @game_teams.find_all { |gameteam| gameteam.result == "TIE" }.count
     (result.to_f / @game_teams.count).round(2)
   end
+
+  # def highest_scoring_visitor
+  #   visitor_goals = Hash.new(0)
+  #   @games.each do |game|
+  #     visitor_goals[game.away_team_id] += game.away_goals
+  #   end
+
+  #   visitor_games = Hash.new(0)
+  #   @games.each do |game|
+  #     visitor_games[game.away_team_id] += 1
+  #   end
+
+  #   visitor_scoring_percentage = Hash.new(0)
+  #   visitor_games.map do |visitor_id, away_games|
+  #     visitor_goals.map do |id, goals|
+  #       visitor_scoring_percentage[id] = goals.to_f / games.count
+  #     end
+  #     require 'pry'; binding.pry
+  #   end
+  # end
+
 end
+
 
