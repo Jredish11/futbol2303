@@ -3,7 +3,6 @@ require_relative 'game'
 require_relative 'team'
 require_relative 'game_teams'
 
-
 class StatTracker
   attr_reader :games,
               :teams,
@@ -98,7 +97,7 @@ class StatTracker
       return team.teamname if best[0] == team.team_id
     end
   end
-  
+
   def worst_offense
     average = averages_id_by_goals_games
     worst = average.min_by do |key, value|
@@ -115,51 +114,57 @@ class StatTracker
     @teams.select { |team| team.team_id == low_team_id }.flat_map {|team| team.teamname }.join
   end
 
-#helper method returns hash home/away team_id and total goals scored
-  def total_goals
-    team_goals = Hash.new(0)
+  def highest_scoring_home_team
+    home_team_goals = Hash.new(0)
     @games.each do |game|
-      team_goals[game.home_team_id] = team_goals[game.home_team_id] + game.home_goals
-      team_goals[game.away_team_id] = team_goals[game.away_team_id] + game.away_goals
+      home_team_goals[game.home_team_id] += game.home_goals
     end
-    team_goals
+    avg_goals = Hash.new(0)
+    home_games = @games.group_by { |game| game.home_team_id }.transform_values {|games| games.count {|game| game } }
+    highest_percentage = home_team_goals.map { |key, value| avg_goals[key] = value.to_f / home_games[key] }
+    team_id_max_value = avg_goals.max_by {|id , max_value| max_value }.first
+    high_away_team = @teams.select { |team| team.team_id == team_id_max_value }.flat_map { |team| team.teamname }.join
+    high_away_team 
   end
 
-#helper method returns hash home/away team_id and total games played
-  def total_games
-    team_games = Hash.new(0)
-    @game_teams.each do |gameteam|
-      team_games[gameteam.team_id] += 1
+  def lowest_scoring_visitor
+    visitor_team_goals = Hash.new(0)
+    @games.each do |game|
+      visitor_team_goals[game.away_team_id] += game.away_goals
     end
-    team_games
+    avg_goals = Hash.new(0)
+    away_games = @games.group_by { |game| game.away_team_id }.transform_values {|games| games.count {|game| game } }
+    lowest_percentage = visitor_team_goals.map { |key, value| avg_goals[key] = value.to_f / away_games[key] }
+    team_id_min_value = avg_goals.min_by {|id , low_value| low_value }.first
+    low_away_team = @teams.select { |team| team.team_id == team_id_min_value }.flat_map { |team| team.teamname }.join
+    low_away_team
   end
 
-
-  #helper method returns hash home/away team_id and average goals scored
-  def averages_id_by_goals_games
-    average = Hash.new(0)
-    total_goals.each do |id, goals|
-      total_games.each do |eye_d, games|
-        if id == eye_d
-          average[id] = goals/games.to_f
-        end
-      end
+  def highest_scoring_visitor
+    visitor_team_goals = Hash.new(0)
+    @games.each do |game|
+      visitor_team_goals[game.away_team_id] += game.away_goals
     end
-    average
+    avg_goals = Hash.new(0)
+    away_games = @games.group_by { |game| game.away_team_id }.transform_values {|games| games.count {|game| game } }
+    highest_percentage = visitor_team_goals.map { |key, value| avg_goals[key] = value.to_f / away_games[key] }
+    team_id_max_value = avg_goals.max_by {|id , max_value| max_value }.first
+    high_away_team = @teams.select { |team| team.team_id == team_id_max_value }.flat_map { |team| team.teamname }.join
+    high_away_team 
   end
-
+  
   def winningest_coach(year)
     season_sort = @games.group_by { |game| game.season } 
     game_id_sort = @game_teams.group_by { |id| id.game_id }
-
+    
     game_ids_season = Hash.new(0)
     @games.each { |game| game_ids_season[game.id] = game.season } 
-
+    
     game_teams_ids = Hash.new(0)
     game_id_sort.each do |team, value|
       game_teams_ids[team] = [value[0].head_coach], [value[1].head_coach]
     end
-
+    
     season_coaches = []
     game_ids_season.each do |id, season|
       game_teams_ids.each do |ids, coaches|
@@ -168,14 +173,14 @@ class StatTracker
         end
       end
     end
-
+    
     game_ids_wins = Hash.new(0)
     @game_teams.each do |team| 
       if team.result == "WIN"
         game_ids_wins[team.game_id] = team.head_coach
       end
     end
-
+    
     season_game_id_hash = Hash.new(0)
     season_sort.each do |season, season_arr|
       season_game_id_hash[season] = []
@@ -183,7 +188,7 @@ class StatTracker
         season_game_id_hash[season] << game.id
       end
     end
-
+    
     coach_game_count = Hash.new(0)
     @game_teams.each do |coach|
       if !coach_game_count.keys.include?(coach.head_coach)
@@ -192,7 +197,7 @@ class StatTracker
         coach_game_count[coach.head_coach] += 1
       end
     end
-
+    
     wins = Hash.new(0)
     game_ids_wins.each do |key, value|
       coach_game_count.keys.each do |coach|
@@ -205,14 +210,14 @@ class StatTracker
         end
       end
     end
-
+    
     win_coach_hash = Hash.new(0)
     season_game_id_hash.each do |season, game_id_array|
       game_ids_wins.each do |game_id, winning_coach|
         win_coach_hash[winning_coach] += 1 if season == year && game_id_array.include?(game_id)
       end
     end
-
+    
     coach_count_hash = Hash.new(0)
     season_game_id_hash.each do |season, game_id_array|
       game_teams_ids.each do |game_id, coaches|
@@ -234,32 +239,44 @@ class StatTracker
     end
     high_avg[0]
   end
-
+  
   def percentage_ties
     result = @game_teams.find_all { |gameteam| gameteam.result == "TIE" }.count
     (result.to_f / @game_teams.count).round(2)
   end
-
-  # def highest_scoring_visitor
-  #   visitor_goals = Hash.new(0)
-  #   @games.each do |game|
-  #     visitor_goals[game.away_team_id] += game.away_goals
-  #   end
-
-  #   visitor_games = Hash.new(0)
-  #   @games.each do |game|
-  #     visitor_games[game.away_team_id] += 1
-  #   end
-
-  #   visitor_scoring_percentage = Hash.new(0)
-  #   visitor_games.map do |visitor_id, away_games|
-  #     visitor_goals.map do |id, goals|
-  #       visitor_scoring_percentage[id] = goals.to_f / games.count
-  #     end
-  #     require 'pry'; binding.pry
-  #   end
-  # end
-
+  
+  #helper method returns hash home/away team_id and total goals scored
+    def total_goals
+      team_goals = Hash.new(0)
+      @games.each do |game|
+        team_goals[game.home_team_id] = team_goals[game.home_team_id] + game.home_goals
+        team_goals[game.away_team_id] = team_goals[game.away_team_id] + game.away_goals
+      end
+      team_goals
+    end
+  
+  #helper method returns hash home/away team_id and total games played
+    def total_games
+      team_games = Hash.new(0)
+      @game_teams.each do |gameteam|
+        team_games[gameteam.team_id] += 1
+      end
+      team_games
+    end
+  
+  
+    #helper method returns hash home/away team_id and average goals scored
+    def averages_id_by_goals_games
+      average = Hash.new(0)
+      total_goals.each do |id, goals|
+        total_games.each do |eye_d, games|
+          if id == eye_d
+            average[id] = goals/games.to_f
+          end
+        end
+      end
+      average
+    end
 end
 
 

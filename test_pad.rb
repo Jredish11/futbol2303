@@ -211,3 +211,27 @@
   #   # lowest_percentage = home_team_goals.map { |key, value| avg_goals[key] = value.to_f / home_games[key] }
   #   # team_id_min_value = avg_goals.min_by {|id , low_value| low_value }.first
   # end
+
+
+  # def most_tackles(season)
+  #   #game_teams, teams
+  #   game_id = {}
+  #   season_name = @game_teams.group_by {|gameteam| gameteam.team_id }
+  #   season_name.each { | }
+  #     gameteams.sum { |gameteam| gameteam.tackles } 
+  #     require 'pry'; binding.pry
+  #   end
+  #   # id = season_name.map do |id, gameteams| gameteams.map do |gameteam|
+  #   #   game_id[id] += gameteam.tackles
+  #   #   end
+  #   # end
+  #   #  season_name.each {|id, gameteams| gameteams.map { |gameteam| gameteam.tackles } }.count
+  #   # tackles_num = season_name.map {|id, gameteams| gameteams.sum { |gameteam| require 'pry'; binding.pry } }
+  # end
+
+  # describe "#most_tackles" do
+  #   it "name's team with the most_tackles in a season" do
+  #     expect(@stat_tracker.most_tackles("20132014")).to eq "FC Cincinnati"
+  #     expect(@stat_tracker.most_tackles("20142015")).to eq "Seattle Sounders FC"
+  #   end
+  # end
