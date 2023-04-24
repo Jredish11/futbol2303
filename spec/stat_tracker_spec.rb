@@ -49,11 +49,51 @@ RSpec.describe StatTracker do
     end
   end
 
+  ##GAME STATISICS
+
   describe "#highest_total_score" do
     it "can calculate highest_total_score" do
       expect(@stat_tracker.highest_total_score).to eq(11)
     end
   end
+
+  describe "#lowest_total_score" do
+    it "can calculate lowest_total_score" do
+      expect(@stat_tracker.lowest_total_score).to eq(0)
+    end
+  end
+
+  describe "#percentage_home_wins" do
+    it "gets Percentage of games that a home team has won" do
+      expect(@stat_tracker.percentage_home_wins).to(eq 0.44)
+    end
+  end
+
+  describe "#percentage_visitor_wins" do
+    it "gets Percentage of games that a visitor team has won" do
+        expect(@stat_tracker.percentage_visitor_wins).to eq(0.36)
+    end
+  end
+
+  describe "#percentage_ties" do
+    it "can calculate percentage of tie games team has had" do
+      expect(@stat_tracker.percentage_ties).to eq(0.20)
+    end
+  end
+
+  describe "#count_of_games_by_season" do
+  it "can calculate count_of_games_by_season" do
+    expected = {
+      "20122013"=>806,
+      "20162017"=>1317,
+      "20142015"=>1319,
+      "20152016"=>1321,
+      "20132014"=>1323,
+      "20172018"=>1355
+    }
+    expect(@stat_tracker.count_of_games_by_season).to eq(expected)
+  end
+end
 
   describe "#average_goals_per_game" do
     it "gets the average goals per game over every season, every game" do
@@ -75,38 +115,7 @@ RSpec.describe StatTracker do
     end
   end
 
-  describe "#lowest_total_score" do
-    it "can calculate lowest_total_score" do
-      expect(@stat_tracker.lowest_total_score).to eq(0)
-    end
-  end
-
-
-  describe "#count_of_games_by_season" do
-    it "can calculate count_of_games_by_season" do
-      expected = {
-        "20122013"=>806,
-        "20162017"=>1317,
-        "20142015"=>1319,
-        "20152016"=>1321,
-        "20132014"=>1323,
-        "20172018"=>1355
-      }
-      expect(@stat_tracker.count_of_games_by_season).to eq(expected)
-    end
-  end
-
-  describe "#percentage_home_wins" do
-    it "gets Percentage of games that a home team has won" do
-      expect(@stat_tracker.percentage_home_wins).to(eq 0.44)
-    end
-  end
-
-  describe "#percentage_visitor_wins" do
-    it "gets Percentage of games that a visitor team has won" do
-        expect(@stat_tracker.percentage_visitor_wins).to eq(0.36)
-    end
-  end
+ ## LEAGUE STATISTICS
 
   describe "#count of teams" do
     it "returns the total amount of teams in data" do
@@ -126,28 +135,31 @@ RSpec.describe StatTracker do
     end
   end
 
+  describe "#highest_scoring_visitor" do
+    it "#highest_scoring_visitor" do
+      expect(@stat_tracker.highest_scoring_visitor).to eq("FC Dallas")
+    end
+  end
+
+  describe "#lowest_scoring_visitor" do
+    it "returns name of team with lowest average goals scored per away game" do
+      expect(@stat_tracker.lowest_scoring_visitor).to eq("San Jose Earthquakes")
+    end
+  end
+
+  describe "#highest_scoring_home_team" do
+    it "return name of the team with the highest average goals scored per home game" do
+      expect(@stat_tracker.highest_scoring_home_team).to eq("Reign FC")
+    end
+  end
+
   describe "#lowest_scoring_home_team" do
     it "returns name of the team with the lowest average goals scored per home game" do
       expect(@stat_tracker.lowest_scoring_home_team).to eq("Utah Royals FC")
     end
   end
 
-  describe "#highest_scoring_home_team"
-    it "return name of the team with the highest average goals scored per home game" do
-      expect(@stat_tracker.highest_scoring_home_team).to eq("Reign FC")
-    end
-  
-  describe "#lowest_scoring_visitor" do
-    it "returns name of team with lowest average goals scored per away game" do
-      expect(@stat_tracker.lowest_scoring_visitor).to eq "San Jose Earthquakes"
-    end
-  end
-  
-  describe "#highest_scoring_visitor" do
-    it "#highest_scoring_visitor" do
-      expect(@stat_tracker.highest_scoring_visitor).to eq "FC Dallas"
-    end
-  end
+## SEASON STATISTICS
 
   describe "#winningest_coach" do
     it "returns the coach with the highest win percentage" do
@@ -158,12 +170,8 @@ RSpec.describe StatTracker do
     end
   end
 
-  describe "#percentage_ties" do
-    it "can calculate percentage of tie games team has had" do
-      expect(@stat_tracker.percentage_ties).to eq(0.20)
-    end
-  end
-  
+## HELPER METHODS
+
   #helper methods
   describe "#total_goals" do
     it "returns hash of home/away_team_id and total goals" do
@@ -171,7 +179,7 @@ RSpec.describe StatTracker do
       expect(@stat_tracker.total_goals["6"]).to eq(1154)
     end
   end
-  
+
   describe "total_games" do
     it "returns a hash of home/away team_id and total games played" do
       expect(@stat_tracker.total_goals.keys.count).to eq(@stat_tracker.count_of_teams)
