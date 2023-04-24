@@ -2,7 +2,6 @@ require './lib/stat_tracker'
 require 'spec_helper'
 require 'rspec'
 
-
 RSpec.describe StatTracker do
   before(:all) do
     game_path = './data/games.csv'
@@ -128,11 +127,43 @@ RSpec.describe StatTracker do
   end
 
   describe "#lowest_scoring_home_team" do
-    it "returns name of the team with the lowest average number of goals scored per home game" do
-        expect(@stat_tracker.lowest_scoring_home_team).to eq("Utah Royals FC")
+    it "returns name of the team with the lowest average goals scored per home game" do
+      expect(@stat_tracker.lowest_scoring_home_team).to eq("Utah Royals FC")
     end
   end
 
+  describe "#highest_scoring_home_team"
+    it "return name of the team with the highest average goals scored per home game" do
+      expect(@stat_tracker.highest_scoring_home_team).to eq("Reign FC")
+    end
+  
+  describe "#lowest_scoring_visitor" do
+    it "returns name of team with lowest average goals scored per away game" do
+      expect(@stat_tracker.lowest_scoring_visitor).to eq "San Jose Earthquakes"
+    end
+  end
+  
+  describe "#highest_scoring_visitor" do
+    it "#highest_scoring_visitor" do
+      expect(@stat_tracker.highest_scoring_visitor).to eq "FC Dallas"
+    end
+  end
+
+  describe "#winningest_coach" do
+    it "returns the coach with the highest win percentage" do
+      expect(@stat_tracker.winningest_coach("20132014")).to eq("Claude Julien")
+      expect(@stat_tracker.winningest_coach("20142015")).to eq("Alain Vigneault")
+      expect(@stat_tracker.winningest_coach("20152016")).to eq("Barry Trotz")
+      expect(@stat_tracker.winningest_coach("20162017")).to eq("Bruce Cassidy")
+    end
+  end
+
+  describe "#percentage_ties" do
+    it "can calculate percentage of tie games team has had" do
+      expect(@stat_tracker.percentage_ties).to eq(0.20)
+    end
+  end
+  
   #helper methods
   describe "#total_goals" do
     it "returns hash of home/away_team_id and total goals" do
@@ -140,7 +171,7 @@ RSpec.describe StatTracker do
       expect(@stat_tracker.total_goals["6"]).to eq(1154)
     end
   end
-
+  
   describe "total_games" do
     it "returns a hash of home/away team_id and total games played" do
       expect(@stat_tracker.total_goals.keys.count).to eq(@stat_tracker.count_of_teams)
@@ -153,25 +184,6 @@ RSpec.describe StatTracker do
     it "returns hash of home/away team_id and average goals per game" do
       expect(@stat_tracker.averages_id_by_goals_games.keys.count).to eq(@stat_tracker.count_of_teams)
       expect(@stat_tracker.averages_id_by_goals_games["6"]).to eq(2.2627450980392156)
-    end
-  end
-
-  describe "#winningest_coach" do
-    it "returns the coach with the highest win percentage" do
-      expect(@stat_tracker.winningest_coach("20132014")).to eq("Claude Julien")
-      expect(@stat_tracker.winningest_coach("20142015")).to eq("Alain Vigneault")
-    end
-  end
-
-  describe "#percentage_ties" do
-    it "can calculate percentage of tie games team has had" do
-      expect(@stat_tracker.percentage_ties).to eq(0.20)
-    end
-  end
-
-  describe "#highest_scoring_visitor" do
-    xit "#highest_scoring_visitor" do
-      expect(@stat_tracker.highest_scoring_visitor).to eq "FC Dallas"
     end
   end
 end
